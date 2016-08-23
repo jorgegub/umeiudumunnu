@@ -1,6 +1,7 @@
 ************************************************************************************
-Ahora ponemos el c�digo que encontramos en SAS communities
+Ahora ponemos el código que encontramos en SAS communities
 https://communities.sas.com/t5/General-SAS-Programming/Estimate-transition-probability-matrix/m-p/228510/highlight/true#M33589
+Estima una matriz de transición de un panel balanceado. Similar al XTTRANS de stata.
 ************************************************************************************;
 data  ssd_pf.colapsada_buro_4;
 	set ssd_pf.colapsada_buro_4;
