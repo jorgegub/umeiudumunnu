@@ -1,6 +1,6 @@
 /*
 As stata's fillin, this query adds observations with missing data so that all interactions of id_time and id exist, 
-thus making a complete rectangularization of the dataset.
+thus making a complete rectangularization of the dataset. I found it somewhere in SAS Communities.
 */
 
 %let data= ssd_pf.colapsada_buro_3;
