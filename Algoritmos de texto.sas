@@ -4,6 +4,7 @@
 Se regresa la base_salida como copia de la base_entrada, una columna llamada clave que indica 
 la codificación de la variable_a_codificar y otra llamada sin_acronimos_variable_a_codificar 
 que es lo que se usa para calcular el compged (la distancia entre dos palabras)*
+Implementado por ECG y RAL.
 *******************************************************************************************;
 options mprint; *En el log aparecen las sustituciones que la macro hace;
 %macro codificacion(base_entrada=, base_salida=, variable_a_codificar=);
