@@ -331,4 +331,7 @@ Desarrolla el uso de la función spedis disponible en SAS para comparar cadenas 
 
 Deteccion de duplicados:una guía metodológica
 http://www.bdigital.unal.edu.co/2033/2/71644758.20102.pdf
+
+Revisar
+http://www.sciencedirect.com/science/article/pii/S0304397508000406
 */
