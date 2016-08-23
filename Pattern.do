@@ -1,11 +1,11 @@
 
  clear all
-*Versión de panel: Panelv6.dta
+*VersiÃ³n de panel: Panelv6.dta
 
 ********************************************************************
 *Elige usuario
-if c(username)=="G10545" {
-cd \\170.70.49.219\oaif\
+if c(username)=="XXXX" {
+cd \\XXXX\
 }
 else {
 cd P:\
