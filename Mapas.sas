@@ -1,5 +1,5 @@
-*MAPA EN SAS A NIVEL MUNICIPAL EN MÉXICO
-***Primero creas una base annotate para poner los bordes de los estados. Creo que lo saqué de aquí
+*MAPA EN SAS A NIVEL MUNICIPAL EN MÃ‰XICO
+***Primero creas una base annotate para poner los bordes de los estados. Creo que lo saquÃ© de aquÃ­
 http://www.mwsug.org/proceedings/2013/DV/MWSUG-2013-DV06.pdf
 ;
 goptions  cback=white htitle=12pt htext=10pt noborder ;  
@@ -51,17 +51,15 @@ data anno;
   output;
 run;
 
-
+***************************************************************************************************
+Empiezan los mapas;
+***********************************************************************************************;
 
 **sorteas la base anterior por id;
 proc sort data=buro_id;
 	by descending id;
 run;
 
-
-***************************************************************************************************
-Empiezan los mapas;
-***********************************************************************************************;
 proc means data=work.buro_id (where=((periodo=201503) and numero>0 ));
 	var numero;
 	output out=percentiles_ (DROP=_FREQ_ _TYPE_)
@@ -102,7 +100,7 @@ pattern5 color=morbr;
 pattern6 color=black;
 pattern7 color=black;
 
-title "Número de créditos por municipio";
+title "NÃºmero de crÃ©ditos por municipio";
 
 proc gmap
 	map=mapsgfk.mexico 
@@ -116,7 +114,7 @@ run;
 quit;
 
 *********************************************************************;
-*Con esto ves cuáles son los cuartiles buenos;
+*Con esto ves cuÃ¡les son los cuartiles buenos;
 proc means data=buro_id (where=((periodo=201503) and saldo>0 ));
 	var saldo;
 	output out=percentiles_saldo (DROP=_FREQ_ _TYPE_)
@@ -141,7 +139,7 @@ data _null_;
 	call symput('pp75',trim(left(put(&p75/1000,comma8.))));
 run;
 
-title "Saldo de crédito por municipio";
+title "Saldo de crÃ©dito por municipio";
 
 proc format;
 	value saldo_
