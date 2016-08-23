@@ -1,4 +1,4 @@
-
+/*Fuente: CASFIM*/
 proc format cntlout=bancos_sofomes;
 	value bancos_sofomes
 		040002 = 'BANAMEX'
@@ -48,7 +48,7 @@ proc format cntlout=bancos_sofomes;
 		040148 = 'PAGATODO'
 		040149 = 'FORJADORES'
 		040150 = 'INMOBILIARIO MEXICANO'
-		040151 = 'FUNDACION DONDÉ'
+		040151 = 'FUNDACION DONDÃ‰'
 		040152 = 'BANCREA'
 		040154 = 'BANCO FINTERRA'
 		040156 = 'BANCO SABADELL'
@@ -81,15 +81,15 @@ proc format cntlout=bancos_sofomes;
 		068018 = 'SANTANDER'/*'SANTANDER CONSUMO, S.A. DE C.V., SOFOM, E.R.'*/
 		068019 = 'IXE TARJETAS, S.A. DE C.V., SOFOM E.R.'
 		068020 = 'BANCOMER'/*'HIPOTECARIA NACIONAL, SA DE CV, SOFOM, ER'*/
-		068023 = 'MIFEL'/*'Mifel 3, S.A. de C.V., Sociedad Financiera de Objeto Múltiple'*/
+		068023 = 'MIFEL'/*'Mifel 3, S.A. de C.V., Sociedad Financiera de Objeto MÃºltiple'*/
 		068024 = 'MIFEL'
 		068026 = 'SANTANDER'/*'Santander Hipotecario, S.A. de C.V.'*/
 		068027 = 'BANREGIO' /*FINANCIERA BANREGIO*/
 		068028 = 'INBURSA' /*CF CREDIT SERVICES*/
 		068029 = 'CI BANCO' /*FINANMADRID*/
 		068030 = 'SCOTIA'/*'CREDITO FAMILIAR ER SCOTIABANK INVERLAT'*/
-		068031 = 'BANAMEX'/*'Arrendadora Banamex, S.A. de C.V., Sociedad Financiera de Objeto Múltiple'*/
-		068032 = 'VE POR MAS'/*'Arrendadora Ve por Más, S.A. de C.V., Sociedad Financiera de Objeto Múltiple'*/
+		068031 = 'BANAMEX'/*'Arrendadora Banamex, S.A. de C.V., Sociedad Financiera de Objeto MÃºltiple'*/
+		068032 = 'VE POR MAS'/*'Arrendadora Ve por MÃ¡s, S.A. de C.V., Sociedad Financiera de Objeto MÃºltiple'*/
 		068033 = 'AFIRME'/*'ARRENDADORA AFIRME'*/
 		068034 = 'AFIRME'/*'Factoraje Afirme, S.A. de C.V'*/
 		068035 = 'CONSUBANCO'/*'CONSUPAGO ER'*/
@@ -97,7 +97,7 @@ proc format cntlout=bancos_sofomes;
 		068037 = 'CONSUBANCO'/*'OPCIPRES ER'*/
 		068038 = 'PAGATODO'/*'SOM COMERCIOS AFILIADOS ER'*/
 		068039 = 'BANCO SABADELL' /*'Sabcapital, S.A. de C.V., SOFOM, E.R.'*/
-		068063 = 'BANREGIO'/*The Capita Corporation de México*/
+		068063 = 'BANREGIO'/*The Capita Corporation de MÃ©xico*/
 		068064 = 'INBURSA'/*FC Financial, S.A. de C.V., Sociedad Financiera de Objeto*/
 		068040 - 068062 = 'SOFOMES DE EMPRESAS'
 		068065 = 'SOFOMES DE EMPRESAS'
