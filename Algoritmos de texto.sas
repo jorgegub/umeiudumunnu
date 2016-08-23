@@ -1,8 +1,8 @@
 *******************************************************************************************
-********************Macro para codificar una palabra en n˙meros****************************
+********************Macro para codificar una palabra en n√∫meros****************************
 *******************************************************************************************
 Se regresa la base_salida como copia de la base_entrada, una columna llamada clave que indica 
-la codificaciÛn de la variable_a_codificar y otra llamada sin_acronimos_variable_a_codificar 
+la codificaci√≥n de la variable_a_codificar y otra llamada sin_acronimos_variable_a_codificar 
 que es lo que se usa para calcular el compged (la distancia entre dos palabras)*
 *******************************************************************************************;
 options mprint; *En el log aparecen las sustituciones que la macro hace;
@@ -12,16 +12,16 @@ options mprint; *En el log aparecen las sustituciones que la macro hace;
 data tmp;
 set &base_entrada;
 palabra_mod=&variable_a_codificar;
-*Pone palabra en may˙sculas;
+*Pone palabra en may√∫sculas;
 palabra_mod=upcase(palabra_mod);
 *Quita espacios al principio y final;
 palabra_mod=STRIP(palabra_mod);
 /*Pone un espacio al principio y al final;*/
 palabra_mod=CAT(" ",palabra_mod," "); 
-*Cambia car·cteres "¡…Õ”⁄¿»Ã“Ÿ‹" por "AEIOUAEIOUU";
-palabra_mod=TRANSLATE(palabra_mod,"AEIOUAEIOU" , "¡…Õ”⁄¿»Ã“Ÿ");
-*Remueve signos de puntuaciÛn, se queda sÛlo con las letras y espacios;
-palabra_mod=COMPRESS(palabra_mod,"ABCDEFGHIJKLMNOPQRSTUVWXY‹•—– Z","K"); 
+*Cambia car√°cteres "√Å√â√ç√ì√ö√Ä√à√å√í√ô√ú" por "AEIOUAEIOUU";
+palabra_mod=TRANSLATE(palabra_mod,"AEIOUAEIOU" , "√Å√â√ç√ì√ö√Ä√à√å√í√ô");
+*Remueve signos de puntuaci√≥n, se queda s√≥lo con las letras y espacios;
+palabra_mod=COMPRESS(palabra_mod,"ABCDEFGHIJKLMNOPQRSTUVWXY√ú¬•√ë√∞√ê Z","K"); 
 *Quita SA, CV, LA, EN, DEL, Y,...;
 palabra_mod=TRANWRD(palabra_mod," S DE RL ","");
 palabra_mod=TRANWRD(palabra_mod," S DE R L ","");
@@ -35,13 +35,13 @@ palabra_mod=TRANWRD(palabra_mod," CO ","");
 palabra_mod=TRANWRD(palabra_mod," DECV ","");
 palabra_mod=TRANWRD(palabra_mod," SACV ","");
 palabra_mod=TRANWRD(palabra_mod," INC ","");
-palabra_mod=TRANWRD(palabra_mod,"G‹","W");
+palabra_mod=TRANWRD(palabra_mod,"G√ú","W");
 palabra_mod=TRANWRD(palabra_mod,"LL","Y");
 palabra_mod=TRANWRD(palabra_mod,"RR","R");
-palabra_mod=TRANWRD(palabra_mod,"•","—");
-palabra_mod=TRANWRD(palabra_mod,"—","NY");
-palabra_mod=TRANWRD(palabra_mod,"","—");
-palabra_mod=TRANWRD(palabra_mod,"–","—");
+palabra_mod=TRANWRD(palabra_mod,"¬•","√ë");
+palabra_mod=TRANWRD(palabra_mod,"√ë","NY");
+palabra_mod=TRANWRD(palabra_mod,"√∞","√ë");
+palabra_mod=TRANWRD(palabra_mod,"√ê","√ë");
 palabra_mod=TRANWRD(palabra_mod," AC ","");
 palabra_mod=TRANWRD(palabra_mod," IAP ","");
 palabra_mod=TRANWRD(palabra_mod," S A ","");
@@ -108,7 +108,7 @@ quit;
 *Se parte la palabra en la primera letra y el resto;
 *Se quitan vocales y la w de la parte resto de la palabra;
 *Se codifica la parte resto dando valores a las letras;
-*Se obtiene la clave de la palabra concatenando la primera letra y la codificaciÛn que se hizo de la parte resto;
+*Se obtiene la clave de la palabra concatenando la primera letra y la codificaci√≥n que se hizo de la parte resto;
 data &base_salida (drop= palabra_mod0 palabra_mod palabra_mod2 primera resto nume);
 set tmp2;
 primera=substr(palabra_mod2,1,1);
@@ -123,7 +123,7 @@ run;
 
 %end;
 %do;
-%put alg˙n dato no fue proporcionado, no se hizo la codificaciÛn;
+%put alg√∫n dato no fue proporcionado, no se hizo la codificaci√≥n;
 %end;
 %mend codificacion;
 
@@ -131,7 +131,7 @@ run;
 *******************************************************************************************
 *******************************************************************************************
 *******Macro para encontrar las coincidencias por clave de dos bases ya codificadas********
-***************Estas bases deben tener sÛlo la clave como columna en com˙n*****************
+***************Estas bases deben tener s√≥lo la clave como columna en com√∫n*****************
 ****************de lo contrario se unifican las columnas con nombre igual******************
 *******************************************************************************************
 *******************************************************************************************;
@@ -140,11 +140,11 @@ run;
 %macro matches(nombre_base1=,nombre_base2=,base_salida=, var_compged_base1=, var_compged_base2=, distancia=);
 %if "&nombre_base1" NE "" or "&nombre_base2" NE "" or "&base_salida" NE "" or "&var_compged_base1" NE "" or "&var_compged_base2" NE ""%then 
 %do;
-*Se ordena la nombre_base1 que se obtuvo de la codificaciÛn;
+*Se ordena la nombre_base1 que se obtuvo de la codificaci√≥n;
 proc sort data=&nombre_base1;
 by clave;
 run;
-*Se ordena la nombre_base2 que se obtuvo de la codificaciÛn;
+*Se ordena la nombre_base2 que se obtuvo de la codificaci√≥n;
 proc sort data=&nombre_base2;
 by clave;
 run;
@@ -169,7 +169,7 @@ run;
 %end;
 %else
 %do;
-%put alg˙n dato no fue proporcionado, no se construyÛ la tabla final;
+%put alg√∫n dato no fue proporcionado, no se construy√≥ la tabla final;
 %end;
 
 %mend matches;
@@ -177,22 +177,22 @@ run;
 
 *******************************************************************************************
 *******************************************************************************************
-***************Macro para obtener los n˙meros dentro de una variable***********************
+***************Macro para obtener los n√∫meros dentro de una variable***********************
 *******************************************************************************************
 **Se obtiene la base_salida como una copia de la base_entrada y una columna llamada token que 
-muestra un n˙mero dentro del nombre, la variable_con_numeros se presentara tantas veces como 
-los n˙meros que tenga***********************************************************************;
+muestra un n√∫mero dentro del nombre, la variable_con_numeros se presentara tantas veces como 
+los n√∫meros que tenga***********************************************************************;
 
 %macro obtener_numeros(base_entrada=,base_salida=,variable_con_numeros=);
 data &base_entrada;
 set &base_entrada;
-*Se queda sÛlo con digitos y espacios;
+*Se queda s√≥lo con digitos y espacios;
 num=COMPRESS(&variable_con_numeros,,"KDS");
 *Remueve espacios al principio y al final;
 num=STRIP(num);
 *Reemplaza todas las ocurrencias de dos o mas espacios por uno;
 num=COMPBL(num);
-*Pone un espacio al principio del n˙mero;
+*Pone un espacio al principio del n√∫mero;
 num=CAT(" ",num);
 *Se quitan ceros que aparecen a la izquierda;
 num=TRANWRD(num," 00","");
@@ -202,8 +202,8 @@ run;
 *(keep=token nombre_r04 rfc);
 data &base_salida; 
 set &base_entrada;
-*Se lee cada n˙mero separado por un espacio y se hace una lista con los n˙meros;
-*Se asume que ning˙n la variable_con_numeros no tiene en su nombre m·s de 10 n˙meros;
+*Se lee cada n√∫mero separado por un espacio y se hace una lista con los n√∫meros;
+*Se asume que ning√∫n la variable_con_numeros no tiene en su nombre m√°s de 10 n√∫meros;
 do I=1 to 10;
 token=scan(num, I, ' ');
 if token=' ' then goto finish;
@@ -214,7 +214,7 @@ end;
 finish: ;
 run;
 
-*Se ordena la lista de n˙meros obtenida;
+*Se ordena la lista de n√∫meros obtenida;
 proc sort data=&base_salida (drop=num I);
 by token;
 run;
@@ -294,4 +294,40 @@ tables token / missing out=freq noprint;
 run;
 
 proc print data=freq;
-run;
+run;*/
+
+/*
+
+REFERENCIAS:
+
+The fuzzy feeling SAS provides: electronic matching of records without common keys.
+http://www.sconsig.com/sastips/obswww15.pdf
+http://www.sconsig.com/sastips/tip0000c.htm --> c√≥digo extra
+Paper sobre el manejo de una base de datos y el c√≥digo desarrollado (se encuentra al final del documento). 
+De aqu√≠ se obtuvo el c√≥digo para separar los n√∫meros dentro de los nombres.
+
+Double metaphone.
+http://aspell.net/metaphone/dmetaph.cpp
+http://aspell.net/metaphone/ --> p√°gina del autor
+C√≥digo en C++ del algoritmo fon√©tico double metaphone (indexa palabras por su sonido).
+Fue la base del c√≥digo.
+
+The Spanish Metaphone Algorithm.
+https://github.com/amsqr/Spanish-Metaphone/blob/master/phonetic_algorithms_es.py
+C√≥digo en python del algoritmo fon√©tico metaphone para espa√±ol.
+
+Algoritmo fon√©tico para detecci√≥n de cadenas de texto duplicadas en el idioma espa√±ol.
+http://www.scielo.org.co/scielo.php?script=sci_arttext&pid=S1692-33242012000100011#t3
+Desarrolla una manera de indexar las letras para el idioma espa√±ol.
+
+Matching Data Using Sounds-Like Operators and SAS¬Æ Compare Functions
+http://support.sas.com/resources/papers/proceedings12/122-2012.pdf
+Explica las funciones disponibles en SAS para comparar dos cadenas de caracteres
+
+Use of SPEDIS Function in Finding Specific Values
+http://www2.sas.com/proceedings/sugi25/25/cc/25p086.pdf
+Desarrolla el uso de la funci√≥n spedis disponible en SAS para comparar cadenas de caracteres
+
+Deteccion de duplicados:una gu√≠a metodol√≥gica
+http://www.bdigital.unal.edu.co/2033/2/71644758.20102.pdf
+*/
