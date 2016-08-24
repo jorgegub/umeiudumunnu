@@ -2,7 +2,9 @@
 ****************************************************************************************************************;
 
 /*Have you ever needed to know if a given variable is in a SAS data set? 
-This macro returns 1 if a variable exists in a data set, 0 if not.*/
+This macro returns 1 if a variable exists in a data set, 0 if not.
+Found it in SAS communities.
+*/
 %macro VarExist(ds,var);
 	%local rc dsid result;
 	%let dsid=%sysfunc(open(&ds));
@@ -29,7 +31,9 @@ This macro returns 1 if a variable exists in a data set, 0 if not.*/
 */
 
 **************************************************************************;
-/* AquÌ est· el programa macro para generar la variable de patrÛn */
+/* Aqu√≠ est√° el programa macro para generar la variable de patr√≥n.
+   Cualquier comentario para su mejora, es bien recibido.
+*/
 %macro pattern(data=, id_time=, id_unico=);
 
 	proc sort data= &data;
@@ -79,7 +83,7 @@ This macro returns 1 if a variable exists in a data set, 0 if not.*/
 		by &id_unico;
 	run;
 
-	*usar el varexist (macro para ver si existe la varible patrÛn en &data);
+	*usar el varexist (macro para ver si existe la varible patr√≥n en &data);
 	%if %VarExist(&data,patron)=1 %then
 		%do;
 			%let vardrop = id_tiempo uno patron;
