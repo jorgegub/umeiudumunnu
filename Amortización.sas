@@ -1,5 +1,5 @@
 /* PROGRAMA PARA SIMULAR CHOQUES DE TASA A LAS LÍNEAS DE CRÉDITOS EMPRESARIALES*/
-/* OAIF */
+/* AGH y JGB */
 /* SUPUESTOS DEL BENCHMARK*/
 /*
 Los créditos no revolventes siguen un comportamineto de pago de tabla de amortización sencilla.
