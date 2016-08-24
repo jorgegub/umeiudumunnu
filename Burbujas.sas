@@ -1,4 +1,6 @@
-
+/* Aquí creamos unas gráfica de burbujas acompañada de una gráfica de líneas. 
+Nos ayuda a ver la dispersión de una variable y el peso de sus componente, a la vez.
+http://support.sas.com/resources/papers/proceedings10/154-2010.pdf*/
 *Modificas la base;
 proc sort data=grandes_altas;by periodo;run;
 data graficar;
@@ -21,7 +23,7 @@ data graficar;
 		id_tiempo=id_tiempo+1;
 run;
 
-TITLE1 "Tasa de inter�s de nuevos cr�ditos a las empresas emisoras";
+TITLE1 "Tasa de interés de nuevos créditos a las empresas emisoras";
 FOOTNOTE;
 ods graphics on  / reset noborder;
 
@@ -34,7 +36,7 @@ SERIES X=periodochar	Y=TPP_ALTAS_SISTEMA / LINEATTRS=(color=blue thickness=3 );
 *	scatter x=periodochar y=tpp_altas / datalabel=grupobis markerattrs=(size=0) splitchar="-" splitjustify=left 
 		datalabelattrs=( family='calibri' size=7pt style=normal );
 	/*	keylegend   / location=inside position=topright down=2 noborder valueattrs=(family='calibri' size=12pt style=normal)*/;
-	xaxis     fitpolicy=rotatethin   label = "Per�odo" labelattrs=(family='calibri' size=11pt style=normal) valueATTRS=(family='calibri' size=12pt style=normal ) ;
+	xaxis     fitpolicy=rotatethin   label = "Período" labelattrs=(family='calibri' size=11pt style=normal) valueATTRS=(family='calibri' size=12pt style=normal ) ;
 	yaxis  grid gridattrs=(color=liggr pattern=4)  max=12 integer  discreteorder=data label = "Por ciento"   labelattrs=(family='calibri' size=11pt style=normal) valueATTRS=(family='calibri' size=12pt style=normal);
 RUN;
 QUIT;
