@@ -1,6 +1,6 @@
 
  clear all
-*Versión de panel: Panelv6.dta
+*Obtenido de algún lugar de stata forums
 
 ********************************************************************
 *Elige usuario
