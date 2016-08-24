@@ -1,21 +1,21 @@
-/* PROGRAMA PARA SIMULAR CHOQUES DE TASA A LAS LÕNEAS DE CR…DITOS EMPRESARIALES*/
-/* Hecho por la siempre confiable H45-OAIF */
+/* PROGRAMA PARA SIMULAR CHOQUES DE TASA A LAS L√çNEAS DE CR√âDITOS EMPRESARIALES*/
+/* Hecho por la siempre confiable SEAF */
 
 /* SUPUESTOS DEL BENCHMARK*/
 /*
-Los crÈditos no revolventes siguen un comportamineto de pago de tabla de amortizaciÛn sencilla.
-Al vencer, se renuevan todos los crÈditos no revolventes con la lÌnea de crÈdito autorizada al plazo original.
-Los crÈditos revolventes mantienen su saldo, pagando intereses mensuales sobre su lÌnea.
-Adem·s, se supone crecimiento lineal del endeudamiento de las empresas;*/
+Los cr√©ditos no revolventes siguen un comportamineto de pago de tabla de amortizaci√≥n sencilla.
+Al vencer, se renuevan todos los cr√©ditos no revolventes con la l√≠nea de cr√©dito autorizada al plazo original.
+Los cr√©ditos revolventes mantienen su saldo, pagando intereses mensuales sobre su l√≠nea.
+Adem√°s, se supone crecimiento lineal del endeudamiento de las empresas;*/
 
 /* SUPUESTOS DEL ESCENARIO DE CHOQUES DE TASA*/
 /*
-1) TASA FIJA: Los crÈditos NO REVOLVENTES a tasa fija se ven afectados hasta que Èstos renuevan su crÈdito.
-Los crÈditos REVOLVENTES a tasa fija, tanto MN como ME, no se ven afectados.
+1) TASA FIJA: Los cr√©ditos NO REVOLVENTES a tasa fija se ven afectados hasta que √©stos renuevan su cr√©dito.
+Los cr√©ditos REVOLVENTES a tasa fija, tanto MN como ME, no se ven afectados.
 
-2) TASA VARIABLE ASOCIADA A TPM: Los crÈditos en tasa variable est·n asociados a la TPM se ven afectados al instante.
+2) TASA VARIABLE ASOCIADA A TPM: Los cr√©ditos en tasa variable est√°n asociados a la TPM se ven afectados al instante.
 
-3) TASA VARIABLE NO ASOCIADA A TPM: Los crÈditos en tasa variable que no est·n asociados a la TPM no se ven afectados nunca;
+3) TASA VARIABLE NO ASOCIADA A TPM: Los cr√©ditos en tasa variable que no est√°n asociados a la TPM no se ven afectados nunca;
 */
 
 *Crecimiento en moneda nacional;
@@ -47,7 +47,7 @@ Los crÈditos REVOLVENTES a tasa fija, tanto MN como ME, no se ven afectados.
 /*************************************************************************************************/
 /*************************************************************************************************/
 /*************************************************************************************************/
-/* 1) Primero vamos a calcular la din·mica de los crÈditos a tasa fija*/
+/* 1) Primero vamos a calcular la din√°mica de los cr√©ditos a tasa fija*/
 data sasuser.amort_fija;
 	set sasuser.base_serv_deu_collapse(where=(tipo_tasa="fija" &filtroadicional));
 
@@ -62,13 +62,13 @@ data sasuser.amort_fija;
 	array v_choque{13};
 	array v_choquefijo{13};
 
-	*Este es un contador que indica cu·ntas veces ha vencido el crÈdito;
+	*Este es un contador que indica cu√°ntas veces ha vencido el cr√©dito;
 	cont=0;
 
-	*Se inicializa el choque en cero porque en el primer perÌodo no paga porque a˙n no vence (recordar que se les dio un mes m·s);
+	*Se inicializa el choque en cero porque en el primer per√≠odo no paga porque a√∫n no vence (recordar que se les dio un mes m√°s);
 	v_choquefijo{1}=0;
 
-	*AquÌ hacemos el caso de los NO REVOLVENTES EN MONEDA EXTRANJERA;
+	*Aqu√≠ hacemos el caso de los NO REVOLVENTES EN MONEDA EXTRANJERA;
 	if revolvente=0 and monedanacional=0 then
 		do;
 			/*SE LLENA LA PRIMERA ENTRADA DE CADA UNO DE LOS VECTORES*/
@@ -81,10 +81,10 @@ data sasuser.amort_fija;
 			do i=2 to 12;
 				IF v_plazo[i-1] = 0 THEN
 					DO;
-						*Este es un contandor de cu·ntas veces se ha renovado el crÈdito (cu·ntas veces entra al loop);
+						*Este es un contandor de cu√°ntas veces se ha renovado el cr√©dito (cu√°ntas veces entra al loop);
 						cont=cont+1;
 
-						*Si se renueva el crÈdito, a la variable choquefijo se le asigna la trayectoria de choque tpm del mes;
+						*Si se renueva el cr√©dito, a la variable choquefijo se le asigna la trayectoria de choque tpm del mes;
 						v_choquefijo[i]=v_choque[i];
 						v_respon[i]=linea*((1+&crecimientome*(max(plazo_ori,1))/1200))**cont;
 						*v_respon[i]=linea*(1+&crecimientome*(max(plazo_ori,1))/1200);
@@ -103,7 +103,7 @@ data sasuser.amort_fija;
 			end;
 		end;
 
-	/*AquÌ hacemos el caso de los NO REVOLVENTES EN MONEDA NACIONAL*/
+	/*Aqu√≠ hacemos el caso de los NO REVOLVENTES EN MONEDA NACIONAL*/
 	else if revolvente=0 and monedanacional=1 then
 		do;
 			/*	/*SE GENERAN LOS VECTORES, SOLO CORRE 12 MESES (SE DEBE DE PONER 1 MES MAS DE LOS QUE SE QUIERAN CORRER)*/
@@ -117,10 +117,10 @@ data sasuser.amort_fija;
 			do i=2 to 12;
 				IF v_plazo[i-1] = 0 THEN
 					DO;
-						*Este es un contandor de cu·ntas veces se ha renovado el crÈdito (cu·ntas veces entra al loop);
+						*Este es un contandor de cu√°ntas veces se ha renovado el cr√©dito (cu√°ntas veces entra al loop);
 						cont=cont+1;
 
-						*Si se renueva el crÈdito, a la variable choquefijo se le asigna la trayectoria de choque tpm del mes;
+						*Si se renueva el cr√©dito, a la variable choquefijo se le asigna la trayectoria de choque tpm del mes;
 						v_choquefijo[i]=v_choque[i];
 						v_respon[i]=linea*((1+&crecimientomn*(max(plazo_ori,1))/1200))**cont;
 						v_interes[i]=v_respon[i]*(tasa+v_choquefijo[i])/1200;
@@ -174,17 +174,17 @@ data sasuser.amort_fija;
 run;
 
 /*************************************************************************************************/
-/* 2) Ahora vamos a hacer la din·mica de los crÈditos que tienen tasa variable asociada a la TPM */
+/* 2) Ahora vamos a hacer la din√°mica de los cr√©ditos que tienen tasa variable asociada a la TPM */
 data sasuser.amort_variable_tpm;
 	set sasuser.base_serv_deu_collapse(where=(tpm=1 and tipo_tasa="variable" &filtroadicional));
 
 	/*SE ASIGNA LA TRAYECTORIA DE TPM*/
 	&trayectoria;
 
-	*Este es un contador que indica cu·ntas veces ha vencido tu crÈdito;
+	*Este es un contador que indica cu√°ntas veces ha vencido tu cr√©dito;
 	cont=0;
 
-	*AquÌ hacemos el caso de los NO REVOLVENTES EN MONEDA EXTRANJERA;
+	*Aqu√≠ hacemos el caso de los NO REVOLVENTES EN MONEDA EXTRANJERA;
 	if revolvente=0 and monedanacional=0 then
 		do;
 			/*SE GENERAN LOS VECTORES, SOLO CORRE 12 MESES (SE DEBE DE PONER 1 MES MAS DE LOS QUE SE QUIERAN CORRER)*/
@@ -222,7 +222,7 @@ data sasuser.amort_variable_tpm;
 			end;
 		end;
 
-	/*AquÌ hacemos el caso de los NO REVOLVENTES EN MONEDA NACIONAL*/
+	/*Aqu√≠ hacemos el caso de los NO REVOLVENTES EN MONEDA NACIONAL*/
 	else if revolvente=0 and monedanacional=1 then
 		do;
 			/*	/*SE GENERAN LOS VECTORES, SOLO CORRE 12 MESES (SE DEBE DE PONER 1 MES MAS DE LOS QUE SE QUIERAN CORRER)*/
@@ -289,17 +289,17 @@ data sasuser.amort_variable_tpm;
 		end;
 run;
 
-/* 3) ahora vamos a hacer la din·mica de los crÈditos en tasa variable que no est·n asociados a la TPM*/
+/* 3) ahora vamos a hacer la din√°mica de los cr√©ditos en tasa variable que no est√°n asociados a la TPM*/
 data sasuser.amort_variable_notpm;
 	set sasuser.base_serv_deu_collapse(where=(tpm=0 and tipo_tasa="variable" &filtroadicional));
 
 	/*SE ASIGNA LA TRAYECTORIA DE TPM*/
 	&trayectoria;
 
-	*Este es un contador que indica cu·ntas veces ha vencido tu crÈdito;
+	*Este es un contador que indica cu√°ntas veces ha vencido tu cr√©dito;
 	cont=0;
 
-	*AquÌ hacemos el caso de los NO REVOLVENTES EN MONEDA EXTRANJERA;
+	*Aqu√≠ hacemos el caso de los NO REVOLVENTES EN MONEDA EXTRANJERA;
 	if revolvente=0 and monedanacional=0 then
 		do;
 			/*SE GENERAN LOS VECTORES, SOLO CORRE 12 MESES (SE DEBE DE PONER 1 MES MAS DE LOS QUE SE QUIERAN CORRER)*/
@@ -337,7 +337,7 @@ data sasuser.amort_variable_notpm;
 			end;
 		end;
 
-	/*AquÌ hacemos el caso de los NO REVOLVENTES EN MONEDA NACIONAL*/
+	/*Aqu√≠ hacemos el caso de los NO REVOLVENTES EN MONEDA NACIONAL*/
 	else if revolvente=0 and monedanacional=1 then
 		do;
 			/*	/*SE GENERAN LOS VECTORES, SOLO CORRE 12 MESES (SE DEBE DE PONER 1 MES MAS DE LOS QUE SE QUIERAN CORRER)*/
@@ -409,35 +409,8 @@ DATA sasuser.escenario_cambiotasa;
 	set  sasuser.amort_fija sasuser.amort_variable_tpm sasuser.amort_variable_notpm;
 run;
 
-/* AquÌ ponemos el resumen de la ruta con cambio de tasa */
+/* Aqu√≠ ponemos el resumen de la ruta con cambio de tasa */
 proc means  data=sasuser.escenario_cambiotasa nway missing noprint;
 	output out= cambiotasa_results (DROP=_FREQ_ _TYPE_)
 		sum( respon v_respon: v_pago: v_interes:)=;
 run;
-
-/*
-proc sort data=sasuser.escenario_cambiotasa;
-by id_cre_cnb;run;
-proc sort data=sasuser.benchmark;
-by id_cre_cnb;run;
-
-data buscados;
-merge sasuser.escenario_cambiotasa (in=a) sasuser.benchmark (in=b);
-by id_cre_cnb;
-if b and not a;
-	run;
-
-/* AquÌ ponemos el resumen del benchmark (sin cambio de tasa) 
-data sasuser.escenario_cambiotasa;
-set sasuser.escenario_cambiotasa;
-if plazo<12 then plazomenor=1;
-	else plazomenor=0;
-run;
-
-proc means  data=sasuser.escenario_cambiotasa nway missing;
-CLASS revolvente tipo_tasa TPM plazomenor;
-TYPES revolvente*tipo_tasa*TPM revolvente*tipo_tasa*TPM*plazomenor;
-output out= benchmark_results (DROP=_FREQ_ _TYPE_)
-sum( respon v_respon: v_pago: v_interes:)=;
-run;
-*/
