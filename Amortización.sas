@@ -1,6 +1,5 @@
 /* PROGRAMA PARA SIMULAR CHOQUES DE TASA A LAS LÍNEAS DE CRÉDITOS EMPRESARIALES*/
-/* Hecho por la siempre confiable SEAF */
-
+/* OAIF */
 /* SUPUESTOS DEL BENCHMARK*/
 /*
 Los créditos no revolventes siguen un comportamineto de pago de tabla de amortización sencilla.
