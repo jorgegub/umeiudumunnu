@@ -1,10 +1,10 @@
 /* =========^===============================================**=============== */
-options mstored sasmstore = SSD_PF  ;
-OPTION SPOOL;
+*options mstored sasmstore = SSD_PF  ;
+*OPTION SPOOL;
 *LIBNAME SSD_PF "E:\Buro\Bases\Personas_fisicas\Datamart" ;
 
 %macro dataqual(lib,dsn,idvar,varlist) /*/ store*/	;
-/*Fuente y explicación:
+/*Fuente y explicaciÃ³n:
 http://www.thejuliagroup.com/blog/?m=201105&paged=2
 */
 	Title "Duplicate ID Numbers";
@@ -68,7 +68,7 @@ select count(*) into: obsnum from &lib..&dsn ;quit;
 
 
 /*******************************************************************************/
-
+/* Ejemplo:
 *creas una copia;
 data ssd_pf.prueba (drop=numero_expediente CredEndClaveOtorgante tipo_contrato ClienEndRFC	ClienEndCURP	EmplEndRazonSocial	reclasificacion_estadistica	sector) ;
 	set ssd_pf.personasfisicasendeudamiento_dm;
@@ -97,4 +97,4 @@ run;
 %let variables=credendsaldoactual CredEndCreditoMaximo CredEndMontoPagar DirecEndCodigoPostal EmplEndSalario DirecEndCodigoPostal;
  
 %dataqual(ssd_pf,prueba,id_unico, &variables);
-
+*/
