@@ -1,7 +1,8 @@
 * seaf.scheme
 
-* Este cÛdigo fue hecho a partir del s2color para poder dar formato a las gr·ficas que se incluyen en COPOM. No es una versiÛn final y tiene ciertas cosas que se deben modificar, sobre todo para las gr·ficas m˙ltiples.
-* sugerencias y correcciones al cÛdigo son bienvenidas. Contactar al personal de la Oficina de An·lisis de InformaciÛn Financiera de la SEAF.
+* Este c√≥digo fue hecho a partir del s2color para poder dar formato a las gr√°ficas que se incluyen en COPOM. 
+* No es una versi√≥n final y tiene ciertas cosas que se deben modificar, sobre todo para las gr√°ficas m√∫ltiples.
+* sugerencias y correcciones al c√≥digo son bienvenidas. 
 *                                    s1color.scheme
 
 
@@ -10,7 +11,7 @@
 #include s2color 
 
 sequence 1410 //NSQH
-label "s2color9" //Este nombre aparece en todas las m·quinas. Se eligiÛ este nombre para ser discretos.
+label "s2color9" //Este nombre aparece en todas las m√°quinas. Se eligi√≥ este nombre para ser discretos.
 
 gsize      label     vlarge  //       size of text for label textstyle
    gsize      small_label vlarge //       size of text for small_label textstyle
@@ -24,9 +25,9 @@ color backsymbol     gs8
 
 color text           black
 color body           black
-gsize heading		 zero  // Para que no te ponga el tÌtulo en inglÈs en los kernel.	
-color heading        white  // Para que no te ponga el tÌtulo en inglÈs en los kernel.
- margin        heading        zero   // Para que no te ponga el tÌtulo en inglÈs en los kernel.
+gsize heading		 zero  // Para que no te ponga el t√≠tulo en ingl√©s en los kernel.	
+color heading        white  // Para que no te ponga el t√≠tulo en ingl√©s en los kernel.
+ margin        heading        zero   // Para que no te ponga el t√≠tulo en ingl√©s en los kernel.
  
 color subheading     black
 color matrix_label   black
