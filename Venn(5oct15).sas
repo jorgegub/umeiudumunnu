@@ -1,4 +1,9 @@
-
+/* En este programa utilizamos dos macros para calcular
+1) el número de elementos para cada sección de un diagrama de ven dado y
+2) una macro que utiliza los datos obtenidos por la primera para que la gráfica deseada se grafique 
+proporcionalmente al tamaño de la sección en google analytics. Ojo: Ya cambió un poco la macro respecto 
+a la original que encontré en un paper. 
+Representa una recopilación de dos macros que encontré en internet.*/
 
 proc sql;
 create table base_trans3 as
@@ -420,7 +425,7 @@ run;
 %macro VennChart (size, type, col1, col2, col3, dat1, dat2, dat3, dat4, dat5, dat6,
  dat7, lab1, lab2, lab3,coll);
 data _null_;
-file 'C:\Users\J13246\Desktop\VENN.html';
+file 'C:\Users\XXXX\Desktop\VENN.html';
  put '<img src="http://chart.googleapis.com/chart?chs='"&size."'&cht='"&type."'&chco='"&col1."','"&col2."','"&col3."'&chd=t:'"&dat1."','"&dat2."','"&dat3."','"&dat4."','"&dat5."','"&dat6."','"&dat7."'&chdl='"&lab1."'|'"&lab2."'|'"&lab3."'"width="500" height="500" alt="" />';
   run;
  %mend VennChart;
