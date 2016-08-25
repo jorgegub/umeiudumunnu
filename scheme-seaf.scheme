@@ -1,0 +1,207 @@
+* seaf.scheme
+
+* Este código fue hecho a partir del s2color para poder dar formato a las gráficas que se incluyen en COPOM. No es una versión final y tiene ciertas cosas que se deben modificar, sobre todo para las gráficas múltiples.
+* sugerencias y correcciones al código son bienvenidas. Contactar al personal de la Oficina de Análisis de Información Financiera de la SEAF.
+*                                    s1color.scheme
+
+
+*!  version 1.1.0  22mar2007
+
+#include s2color 
+
+sequence 1410 //NSQH
+label "s2color9" //Este nombre aparece en todas las máquinas. Se eligió este nombre para ser discretos.
+
+gsize      label     vlarge  //       size of text for label textstyle
+   gsize      small_label vlarge //       size of text for small_label textstyle
+   margin     label       zero //         margin around text
+
+
+* do NOT use "r g b" numbers for background and foreground"
+
+color symbol         black
+color backsymbol     gs8
+
+color text           black
+color body           black
+gsize heading		 zero  // Para que no te ponga el título en inglés en los kernel.	
+color heading        white  // Para que no te ponga el título en inglés en los kernel.
+ margin        heading        zero   // Para que no te ponga el título en inglés en los kernel.
+ 
+color subheading     black
+color matrix_label   black
+color label          black
+color key_label      black
+color tick_label     black
+color tick_biglabel  black
+
+color box            ltkhaki
+color textbox        ltkhaki
+color mat_label_box  ltkhaki
+
+color filled_text        black
+color filled             ltkhaki
+color bylabel_outline    black
+
+* Axis
+
+yesno    alt_yaxes      yes //   change the default side of the graph where y axes are drawn
+gsize        tick   vsmall   //     length of major ticks 
+gsize      tick_label       vlarge //  text size for major ticks}
+anglestyle vertical_tick    horizontal //     text angle for vertical (y) axes
+
+  
+  yesno extend_axes_full_low  yes //  extend axis lines through the plot region margin to the bounding
+                                        //   box of the plot region (yes) or to the smallest major tick
+                                        //   mark (no)
+   yesno extend_axes_full_high yes // extend axis lines through the plot region margin to the bounding
+                                        //   box of the plot region (yes) or to the largest major tick mark
+                                        //   (no)
+ yesno extend_axes_low     yes // extend axis lines to the inner margin of the plot region (yes) or to the smallest major tick mark (no)
+   yesno extend_axes_high    yes // extend axis lines to the inner margin of the plot region (yes) or to the largest major tick mark (no)
+										
+										
+										
+ gsize        axis_title     zero //  text size
+   color        axis_title     white //     text color
+   margin       axis_title     zero //    margin around title text
+gsize        axis_title_gap zero //  added distance between tick labels axis title
+
+
+										
+										
+* Grid
+linestyle   axis_withgrid dash //      overall linestyle for axes that by default have a grid
+linewidth   major_grid  medium      //   line thickness for all grids
+color       major_grid  "127 127 127"       // line color for all grids
+linepattern major_grid  dash    // line pattern for all grids
+
+color grid           "127 127 127"
+color major_grid     "127 127 127"
+color mat_label_box  "127 127 127"
+color minor_grid     "127 127 127"
+yesno grid_force_nomin   yes //    never draw the smallest grid line
+
+* Legend 
+color legend             white
+color legend_line        none
+gsize         key_label  vlarge //    key-label text size
+numstyle legend_cols     1 //        number of columns for the keys
+gridringstyle by_legend_ring     10 //    distance from plot region for by graphs
+
+ horizontal    key_label  left // key-label justification; rarely used; use compass2dir key_label instead
+   vertical_text key_label  top //      key-label alignment; rarely used; use compass2dir key_label instead
+
+margin      legend_boxmargin    vsmall //     margin around outside of a legend's box
+clockdir      legend_position 11 //   position with respect to plot region for by graphs
+		// Los siguientes n me funcionaron:
+  clockdir      legend_title_position    11 //  position of legend title
+   clockdir      legend_subtitle_position 11 //  position of legend subtitle
+   clockdir      legend_caption_position  11 //  position of legend caption
+   clockdir      legend_note_position     11 //  position of legend note
+   clockdir      legend_box_position 11	 // Se hizo para ver si pega
+compass2dir   key_label  11 //     label position for legend keys
+vertical_text body         top //   body text alignment; default for  captions
+           vertical_text key_label  top //      key-label alignment; rarely
+                           vertical_text axis_title   top //   axis title alignment                                                       
+* Default
+										
+color ci_line        gs8
+color mat_label_box  ltkhaki
+color ci_arealine    gs12
+color ci_area        gs12
+color ci_symbol      gs8
+color ci2_line       khaki
+color ci2_arealine   ltkhaki
+color ci2_area       ltkhaki
+color ci2_symbol     khaki
+
+color matrix         navy    
+color refmarker      red
+color refmarkline    black
+color histogram      blue
+color histback       white
+color histogram_line white
+color dot_line       gs8
+color dot_arealine   gs8
+color dot_area       gs4
+
+color xyline         cranberry
+color refline        midgreen
+color dots           black
+
+color plotregion         white
+color plotregion_line    none
+color matrix_plotregion  white
+color matplotregion_line black
+* Colores que usualmente usamos en COPOM.
+color p       blue	
+color p1      blue	
+color p2      red
+color p3      green
+color p4      purple
+color p5      teal
+color p6      sienna
+color p7      orange
+color p8      magenta
+color p9      cyan
+color p10     orange_red
+color p11     lime
+color p12     brown
+color p13     purple
+color p14     olive_teal
+color p15     ltblue
+
+color pmarkback      white
+color pmarkbkfill    white
+
+* color p1markfill     light_xyz
+* color p2markfill     light_xyz
+* color p3markfill     light_xyz
+* color p4markfill     light_xyz
+* color p5markfill     light_xyz
+* color p6markfill     light_xyz
+* color p1markfill     none
+* color p2markfill     none
+* color p3markfill     none
+* color p4markfill     none
+* color p5markfill     none
+* color p6markfill     none
+* color p1mark         yellow
+* color p2mark         red
+* color p3mark         blue
+* color p#markfill   none
+* color p#           yellow
+* color p#line       yellow
+* color p#shade      yellow
+* color p#markback   yellow
+* color p#markbkfill yellow
+* color p#area       yellow
+* color plabel       white
+
+
+yesno mat_label_box          no
+yesno mat_label_as_textbox   no
+
+yesno draw_major_vgrid       yes
+
+
+
+areastyle matrix_label        none
+
+* plot region
+shadestyle plotregion none 
+graphsize x           2.95
+graphsize y           4.77	
+color             black
+color background  white
+color foreground  white
+linestyle plotregion  none
+margin plotregion zero  //No logro que funcione con esto.
+
+margin                  zero
+margin graph            medium
+margin twoway           zero
+margin bygraph          zero
+margin scatter 		zero
+
