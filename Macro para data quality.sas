@@ -4,7 +4,8 @@
 *LIBNAME SSD_PF "E:\Buro\Bases\Personas_fisicas\Datamart" ;
 
 %macro dataqual(lib,dsn,idvar,varlist) /*/ store*/	;
-/*Fuente y explicación:
+/*Ligera modificación hecha a la original. 
+Fuente y explicación:
 http://www.thejuliagroup.com/blog/?m=201105&paged=2
 */
 	Title "Duplicate ID Numbers";
