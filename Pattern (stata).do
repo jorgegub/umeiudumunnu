@@ -1,6 +1,6 @@
 
  clear all
-*Obtenido de algún lugar de stata forums
+*Obtenido de algún lugar de stata forums.
 
 ********************************************************************
 *Elige usuario
