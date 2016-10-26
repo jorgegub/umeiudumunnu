@@ -1,6 +1,8 @@
 *MAPA EN SAS A NIVEL MUNICIPAL EN MÉXICO
 ***Primero creas una base annotate para poner los bordes de los estados. Creo que lo saqué de aquí
 http://www.mwsug.org/proceedings/2013/DV/MWSUG-2013-DV06.pdf
+o aquí:
+https://communities.sas.com/t5/SAS-GRAPH-and-ODS-Graphics/Proc-GMap-County-and-State-Boundries/m-p/295256/highlight/true?nobounce#M10401
 ;
 goptions  cback=white htitle=12pt htext=10pt noborder ;  
  /* Create a data set named STATES that contains the state boundaries */
