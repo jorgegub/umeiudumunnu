@@ -7,7 +7,7 @@ DATA _NULL_;
 FILE CMDS; 
 PUT '[Workbook.Activate("temp.xlsx")]';
 PUT "[SAVE()]";
-PUT "[CLOSE("'"'"c:\temp.xlsx"'"'")]"; 
+PUT "[CLOSE("'"'"c:\temp\temp.xlsx"'"'")]"; 
 RUN;
 
 proc export
