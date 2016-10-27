@@ -8,7 +8,6 @@ outfile="c:\temp.xlsx" replace;
 sheet = &hoja ;
 run;
 options noxwait;
-
 FILENAME CMDS DDE 'Excel|system'; 
 DATA _NULL_; 
 FILE CMDS; 
@@ -16,9 +15,13 @@ PUT '[Workbook.Activate("temp.xlsx")]';
 PUT "[SAVE()]";
 PUT "[CLOSE("'"'"c:\temp.xlsx"'"'")]"; 
 RUN;
-
 x start c:\temp.xlsx;
 %mend xport;
+/*Example:
+%xport();
+	o
+%xport(dataxport=WORK.HS0,hoja=HS0);
+ */
 
 *This one imports an excel sheet into a sas data set. 
 No spaces in the sheet's name for simplicity;
@@ -33,5 +36,8 @@ PROC IMPORT OUT= &dataout
      SCANTIME=YES;
 RUN;
 %mend mport;
+
+*Example:
+%mport(datamport='C:\sas_data\hs0.xlsx',sheet=hs0,dataout=hs0);  
 
 
