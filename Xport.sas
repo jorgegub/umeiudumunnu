@@ -13,11 +13,10 @@ RUN;
 proc export
 data=&dataxport
 dbms=xlsx
-outfile="c:\temp.xlsx" replace;
+outfile="c:\temp\temp.xlsx" replace;
 sheet = &hoja ;
 run;
-
-x start c:\temp.xlsx;
+x start c:\temp\temp.xlsx;
 %mend xport;
 /*Example:
 %xport();
@@ -25,9 +24,8 @@ x start c:\temp.xlsx;
 %xport(dataxport=WORK.HS0,hoja=HS0);
  */
 
-*This one imports an excel sheet into a sas data set. 
-No spaces in the sheet's name for simplicity;
 
+*This one imports an excel sheet into a sas data set;
 %macro mport(datamport,sheet,dataout=importado);
 PROC IMPORT OUT= &dataout
             DATAFILE= &datamport.
@@ -41,5 +39,3 @@ RUN;
 
 *Example:
 %mport(datamport='C:\sas_data\hs0.xlsx',sheet=hs0,dataout=hs0);  
-
-
