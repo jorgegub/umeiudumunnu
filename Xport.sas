@@ -21,7 +21,7 @@ x start c:\temp.xlsx;
 %mend xport;
 
 *This one imports an excel sheet into a sas data set. 
-No spaces in the sheet name for simplicity;
+No spaces in the sheet's name for simplicity;
 
 %macro mport(datamport,sheet,dataout=importado);
 PROC IMPORT OUT= &dataout
