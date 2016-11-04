@@ -1,4 +1,4 @@
-/*Fuente: CASFIM*/
+/*Fuente: CASFIM. Actualizado a agosto de 2016.*/
 proc format cntlout=bancos_sofomes;
 	value bancos_sofomes
 		040002 = 'BANAMEX'
