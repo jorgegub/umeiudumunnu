@@ -1,0 +1,365 @@
+filename job "P:\Cuadros y Gráficas\Códigos\SAS\INCLUDE\";
+%include job(DROPMISS.sas,DO_OVER.sas);
+
+*******************************************************************************************
+********************Macro para codificar una palabra en números****************************
+*******************************************************************************************
+Se regresa la base_salida como copia de la base_entrada, una columna llamada clave que indica 
+la codificación de la variable_a_codificar y otra llamada sin_acronimos_variable_a_codificar 
+que es lo que se usa para calcular el compged (la distancia entre dos palabras)*
+*******************************************************************************************;
+options mprint; *En el log aparecen las sustituciones que la macro hace;
+%macro codificacion(base_entrada=, base_salida=, variable_a_codificar=);
+%if "&base_entrada" NE "" or "&base_salida" NE "" or "&variable_a_codificar" NE "" %then 
+%do;
+data tmp;
+set &base_entrada;
+palabra_mod=&variable_a_codificar;
+*Pone palabra en mayúsculas;
+palabra_mod=upcase(palabra_mod);
+*Quita espacios al principio y final;
+palabra_mod=STRIP(palabra_mod);
+*Corta la palabra si le encuentra un + o un /. Nos quedamos con la primera infermedad;
+palabra_mod=substr(palabra_mod, 1, index(palabra_mod, '+') - 1);
+palabra_mod=substr(palabra_mod, 1, index(palabra_mod, '/') - 1);
+*palabra_mod=substr(palabra_mod, 1, index(palabra_mod, ' Y ') - 1);
+
+/*Pone un espacio al principio y al final;*/
+palabra_mod=CAT(" ",palabra_mod," "); 
+
+*Cambia carácteres "ÁÉÍÓÚÀÈÌÒÙÜ" por "AEIOUAEIOUU";
+palabra_mod=TRANSLATE(palabra_mod,"AEIOUAEIOU" , "ÁÉÍÓÚÀÈÌÒÙ");
+
+/*Antes de quitar los números, recuperamos información*/
+palabra_mod=TRANWRD(palabra_mod," 2DO "," SEGUNDO ");
+palabra_mod=TRANWRD(palabra_mod," 2 DO "," SEGUNDO ");
+palabra_mod=TRANWRD(palabra_mod," 2DA "," SEGUNDA ");
+palabra_mod=TRANWRD(palabra_mod," 2 DA "," SEGUNDA ");
+palabra_mod=TRANWRD(palabra_mod," 3ER "," TERCER ");
+palabra_mod=TRANWRD(palabra_mod," 3 ER "," TERCER ");
+palabra_mod=TRANWRD(palabra_mod," 3RO "," TERCERO ");
+palabra_mod=TRANWRD(palabra_mod," 3 RO "," TERCERO ");
+palabra_mod=TRANWRD(palabra_mod," 4O "," CUARTO ");
+palabra_mod=TRANWRD(palabra_mod," 4 O "," CUARTO ");
+palabra_mod=TRANWRD(palabra_mod," 4TO "," CUARTO ");
+palabra_mod=TRANWRD(palabra_mod," 4 TO "," CUARTO ");
+palabra_mod=TRANWRD(palabra_mod," 4TA "," CUARTA ");
+palabra_mod=TRANWRD(palabra_mod," 4 TA "," CUARTA ");
+palabra_mod=TRANWRD(palabra_mod," 5O "," QUINTO ");
+palabra_mod=TRANWRD(palabra_mod," 5 O "," QUINTO ");
+palabra_mod=TRANWRD(palabra_mod," 5TO "," QUINTO ");
+palabra_mod=TRANWRD(palabra_mod," 5 TO "," QUINTO ");
+palabra_mod=TRANWRD(palabra_mod," 5TA "," QUINTA ");
+palabra_mod=TRANWRD(palabra_mod," 5 TA "," QUINTA ");
+palabra_mod=TRANWRD(palabra_mod," GDO "," GRADO ");
+
+*Remueve signos de puntuación, se queda sólo con las letras y espacios;
+palabra_mod=COMPRESS(palabra_mod,"ABCDEFGHIJKLMNOPQRSTUVWXYÜ¥ÑðÐ Z","K"); 
+
+*BUSCA AMENAZAS DE ABORTO;
+if find(palabra_mod," A DE A")>0 then palabra_mod=" AMENAZA DE ABORTO ";
+if find(palabra_mod," A ABORT")>0 then palabra_mod=" AMENAZA DE ABORTO ";
+
+*Quita LA, EN, DEL, Y,...;
+%LET QUITALAS1= DE DEL D LA X POR 
+				PO POS POST POSTQX POSTQUIRURGICO POSOPERADO POSTOPERADO POSTOPERADO POSTOPERADA POSTOPERATORIO POSTOP POSQUIRURGICA POSQUIRURGICO POQX OPERADO OPERADA
+				LAPARASCOPICA LAPARASCOPICO
+				PB EN II LOS LAS UN QX Y G;
+ %DO_OVER(VALUES=&QUITALAS1,
+ PHRASE=palabra_mod=TRANWRD(palabra_mod," ? ", " ");)
+;
+
+*Quita palabras no relevantes;
+
+%LET QUITALAS2= TERCERO TERCERA CUARTO CUARTA QUINTO QUINTA
+				INDICE MEÑIQUE MENIQUE MENYIQUE GORDO PULGAR
+				IZQUIERDO IZQUIERDA IZQ IZQDO DERECHO DERECHA DER DCHO 
+				ENF ENFE ENFER ENFERM ENFERMEDAD ESTATUS CLINICO SECUELA
+				DX DIAGNOSTICO
+				DESCONTROLADO DESCONTROLADA
+				GRAVE LEVE SIMPLE SEVERO SEVERA AGUDA AGUDO PROFUNDA PROFUNDO
+				EXPUESTA EXPUESTO MEDIAL
+				UMF OCI FOLIO DRA DR SUBSECUENTE SUBSEC LISTADO SECCION
+				DESC DESCARTAR
+				ESTUDIO ESTUDIOS
+				;
+ %DO_OVER(VALUES=&QUITALAS2,
+ PHRASE=palabra_mod=TRANWRD(palabra_mod," ? ", " ");)
+;
+
+*Transforma letras;
+palabra_mod=TRANWRD(palabra_mod,"GÜ","W");
+palabra_mod=TRANWRD(palabra_mod,"LL","Y");
+palabra_mod=TRANWRD(palabra_mod,"RR","R");
+palabra_mod=TRANWRD(palabra_mod,"¥","Ñ");
+palabra_mod=TRANWRD(palabra_mod,"ð","Ñ");
+palabra_mod=TRANWRD(palabra_mod,"Ð","Ñ");
+palabra_mod=TRANWRD(palabra_mod,"Ñ","NY");
+
+*Transforma palabras;
+palabra_mod=TRANWRD(palabra_mod," FX "," FRACTURA ");
+palabra_mod=TRANWRD(palabra_mod," LX "," LUXACION ");
+palabra_mod=TRANWRD(palabra_mod," SX "," SINDROME ");
+palabra_mod=TRANWRD(palabra_mod," TX "," TRATAMIENTO ");
+palabra_mod=TRANWRD(palabra_mod," CA "," CANCER ");
+
+palabra_mod=TRANWRD(palabra_mod," EPOC "," PULMONAR OBSTRUCTIVA CRONICA ");
+palabra_mod=TRANWRD(palabra_mod," CCL "," COLECISTITIS CRONICA ");
+palabra_mod=TRANWRD(palabra_mod," IRC "," INSUFICIENCIA RENAL CRONICA ");
+palabra_mod=TRANWRD(palabra_mod," HUA "," HEMORRAGIA UTERINA ANORMAL ");
+palabra_mod=TRANWRD(palabra_mod," HTA "," HIPERTENSION ARTERIAL ");
+palabra_mod=TRANWRD(palabra_mod," SUA "," SANGRADO UTERINO ANORMAL ");
+palabra_mod=TRANWRD(palabra_mod," IVU "," INFECCION VIAS URINARIAS ");
+palabra_mod=TRANWRD(palabra_mod," LUI "," LEGRADO UTERINO INSTRUMENTAL ");
+palabra_mod=TRANWRD(palabra_mod," AMEU "," ASPIRACION MANUAL ENDOUTERINA ");
+palabra_mod=TRANWRD(palabra_mod," EVC "," VASCULAR CEREBRAL ");
+palabra_mod=TRANWRD(palabra_mod," GEPI "," GASTROENTERITIS INFECCION ");
+palabra_mod=TRANWRD(palabra_mod," FOD "," FIEBRE ORIGEN DESCONOCIDO ");
+palabra_mod=TRANWRD(palabra_mod," PBE "," PERITONITIS BACTERIANA ESPONTANEA ");
+palabra_mod=TRANWRD(palabra_mod," MTC "," METACARPIANO ");
+palabra_mod=TRANWRD(palabra_mod," LAPE "," LAPAROTOMIA EXPLORADORA ");
+palabra_mod=TRANWRD(palabra_mod," TCE "," TRAUMATISMO CRANEOENCEFALICO ");
+palabra_mod=TRANWRD(palabra_mod," LCA "," LIGAMENTO CRUZADO ANTERIOR ");
+palabra_mod=TRANWRD(palabra_mod," LCL "," LIGAMENTO CRUZADO LATERAL ");
+palabra_mod=TRANWRD(palabra_mod," HTR "," HUEVO MUERTO RETENIDO ");
+
+palabra_mod=TRANWRD(palabra_mod," EMBARAZO "," EMB ");
+palabra_mod=TRANWRD(palabra_mod," SEMANAS "," SEM ");
+palabra_mod=TRANWRD(palabra_mod," SEMANA "," SEM ");
+palabra_mod=TRANWRD(palabra_mod," SDG "," SEM ");
+palabra_mod=TRANWRD(palabra_mod," COLECISTECTOMIA "," POSTCOLECISTECTOMIA ");
+palabra_mod=TRANWRD(palabra_mod," CHINKUNGUYA "," CHIKUNGUNYA ");
+palabra_mod=TRANWRD(palabra_mod," COXIS "," COCCIX ");	
+palabra_mod=TRANWRD(palabra_mod," TUMORACION "," TUMOR ");	
+palabra_mod=TRANWRD(palabra_mod," CARCINOMA "," CANCER ");	
+palabra_mod=TRANWRD(palabra_mod," ROD "," RODIYA ");	
+palabra_mod=TRANWRD(palabra_mod," RODIYAS "," RODIYA ");	
+palabra_mod=TRANWRD(palabra_mod," MANOS "," MANO ");
+palabra_mod=TRANWRD(palabra_mod," OJOS "," OJO ");	
+palabra_mod=TRANWRD(palabra_mod," DEDOS "," DEDO ");	
+
+
+palabra_mod=TRANWRD(palabra_mod,"   "," ");*quita triples espacios;
+palabra_mod=TRANWRD(palabra_mod,"  "," ");*quita dobles espacios;
+
+*Encuentra coincidencias;
+Palabra_mod=TRANWRD(palabra_mod," NO ESPECIFICADA "," ");
+Palabra_mod=TRANWRD(palabra_mod," NO ESPECIFICADO "," ");
+Palabra_mod=TRANWRD(palabra_mod," A NIVEL "," ");
+Palabra_mod=TRANWRD(palabra_mod," OPERADO "," ");
+Palabra_mod=TRANWRD(palabra_mod," AA SEM "," AMENAZA ABORTO ");
+*palabra_mod=TRANWRD(palabra_mod," EMB SEM "," AMENAZA ABORTO ");
+*palabra_mod=TRANWRD(palabra_mod," EMB SEM "," ");		
+*palabra_mod=TRANWRD(palabra_mod," AMENAZA PARTO "," AMENAZA ABORTO ");
+
+*Los siguientes comandos sólo los realiza cuando no se trata del catálogo, i.e. no encuentra la palabra "CIE";
+if find(&base_entrada,"CIE") > 0 then go to continua;
+
+	*BUSCA CONTRACTURA MUSCULAR;
+	if find(palabra_mod,"CONTRACTURA MUSC")>0 then palabra_mod=" CONTRACTURA MUSCULAR ";
+	*BUSCA AMENAZA ABORTO;
+	if find(palabra_mod,"AMENAZA")>0 & find(palabra_mod,"ABORTO")>0 then palabra_mod=" AMENAZA ABORTO ";
+
+	*BUSCA ZIKA;
+	if find(palabra_mod,"ZIKA")>0 OR find(palabra_mod,"ZICA")>0 then palabra_mod=" ZIKA ";
+	*BUSCA CONJUNTIVITIS;
+	if find(palabra_mod,"CONJUNTIVITIS")>0 then palabra_mod=" CONJUNTIVITIS ";
+	*BUSCA LUMBALGIA;
+	if find(palabra_mod,"LUMBALGIA")>0 then palabra_mod=" LUMBALGIA ";
+	*BUSCA LEGRADO UTERINO;
+	if find(palabra_mod,"LEGRADO UTERINO")>0 then palabra_mod=" LEGRADO UTERINO ";
+	*BUSCA DENGUE;
+	if find(palabra_mod,"DENGUE")>0 then palabra_mod=" DENGUE ";
+
+	*BUSCA FRACTURA FALANGE DEDO PIE;
+	if find(palabra_mod,"FRACTURA")>0 & (find(palabra_mod,"FALANG")>0 OR find(palabra_mod," DEDO ")>0) & find(palabra_mod," PIE ")>0 then palabra_mod=" FRACTURA DEDO PIE ";
+	*BUSCA FRACTURA FALANGE DEDO MANO;
+	if find(palabra_mod,"FRACTURA")>0 & (find(palabra_mod,"FALANG")>0 OR find(palabra_mod," DEDO ")>0) & find(palabra_mod," MANO ")>0 then palabra_mod=" FRACTURA DEDO MANO ";
+
+	*BUSCA HERIDA TOBILLO ;
+	if find(palabra_mod,"HERIDA")>0 & find(palabra_mod,"TOBIYO")>0 then palabra_mod=" HERIDA TOBIYO ";
+	*BUSCA HERIDA DEDO MANO (no pie);
+	if find(palabra_mod,"HERIDA")>0 & (find(palabra_mod," DEDO ")>0 OR find(palabra_mod,"MANO")>0) & find(palabra_mod,"PIE")=0 then palabra_mod=" HERIDA MANO ";
+	*BUSCA HERIDA PIE ;
+	if find(palabra_mod,"HERIDA")>0 & find(palabra_mod," PIE ")>0 then palabra_mod=" HERIDA PIE ";
+	*BUSCA HERIDA DEDO PIE ;
+	if find(palabra_mod,"HERIDA")>0 & find(palabra_mod," DEDO ")>0 & find(palabra_mod," PIE ")>0 then palabra_mod=" HERIDA DEDO PIE ";
+
+	*BUSCA CONTUSION DEDO MANO (no pie);
+	if find(palabra_mod,"CONTUSION")>0 & (find(palabra_mod," DEDO ")>0 OR find(palabra_mod,"MANO")>0) & find(palabra_mod,"PIE")=0 then palabra_mod=" CONTUSION MANO ";
+	*BUSCA CONTUSION PIE ;
+	if find(palabra_mod,"CONTUSION")>0 & find(palabra_mod," PIE ")>0 then palabra_mod=" CONTUSION PIE ";
+	*BUSCA CONTUSION DEDO PIE ;
+	if find(palabra_mod,"CONTUSION")>0 & find(palabra_mod," DEDO ")>0 & find(palabra_mod," PIE ")>0 then palabra_mod=" CONTUSION DEDO PIE ";
+
+continua:
+
+*Transforma letras Y SONIDOS;
+palabra_mod=TRANWRD(palabra_mod,"TRANS","TRAS");
+palabra_mod=TRANWRD(palabra_mod,"CK","K");
+palabra_mod=TRANWRD(palabra_mod,"DD","D");
+palabra_mod=TRANWRD(palabra_mod,"SS","S");
+palabra_mod=TRANWRD(palabra_mod," ES"," S");
+
+*Dejas la palabra sin acrónimos;
+sin_acronimos_&variable_a_codificar=STRIP(palabra_mod); *variable con la que se calcula el compged;
+
+*Sonidos;
+palabra_mod=TRANWRD(palabra_mod,"CA","KA");
+palabra_mod=TRANWRD(palabra_mod,"CO","KO");
+palabra_mod=TRANWRD(palabra_mod,"CU","KU");
+
+
+*Quita palabras no relevantes;
+%LET QUITALAS3= Y EL PARA LOS LAS EN AL A ;
+ %DO_OVER(VALUES=&QUITALAS3,
+ PHRASE=palabra_mod=TRANWRD(palabra_mod," ? ", " ");)
+;
+
+*Quita todos los espacios;
+palabra_mod=COMPRESS(palabra_mod);
+run;
+
+*Quita la letra H al principio de una palabra;
+
+proc sql NOPRINT;
+create table tmp0 as
+select *,
+case 
+when substr(palabra_mod,1,1)="H" then substr(palabra_mod,2)
+else palabra_mod
+end as palabra_mod0
+from tmp;
+quit;
+
+*Se unifican letras con sonido similar;
+proc sql NOPRINT;
+create table tmp2 as
+select *,
+case
+	when substr(palabra_mod0,1,1)="Z" then TRANWRD(substr(palabra_mod0,1,1),"Z","S")||substr(palabra_mod0,2)
+	when substr(palabra_mod0,1,1)="X" then TRANWRD(substr(palabra_mod0,1,1),"X","S")||substr(palabra_mod0,2)
+	when substr(palabra_mod0,1,1)="G" and substr(palabra_mod0,2,1) IN ("E","I") then TRANWRD(substr(palabra_mod0,1,1),"G","J")||substr(palabra_mod0,2)
+	when substr(palabra_mod0,1,1)="C" and not(substr(palabra_mod0,2,1) IN ("E","I","H")) then TRANWRD(substr(palabra_mod0,1,1),"C","K")||substr(palabra_mod0,2)
+else palabra_mod0
+	end as palabra_mod2
+from tmp0;
+quit;
+
+*Se parte la palabra en la primera letra y el resto;
+*Se quitan vocales y la w de la parte resto de la palabra;
+*Se codifica la parte resto dando valores a las letras;
+*Se obtiene la clave de la palabra concatenando la primera letra y la codificación que se hizo de la parte resto;
+data &base_salida (drop= palabra_mod0 palabra_mod palabra_mod2 primera resto nume);
+set tmp2;
+primera=substr(palabra_mod2,1,1);
+resto=substr(palabra_mod2,2);
+resto=COMPRESS(resto,"AEIOUW");
+*nume=TRANSLATE(resto, "0112_3!4444-56677889","PBVFHTDSZCXYLNMQKGJR");/*Anterior*/
+nume=TRANSLATE(resto, "0112_3!4444-56$77889","PBVFHTDSZCXYLNMQKGJR");
+cve_metaphone=CATS(primera,nume);
+run;
+
+proc delete data=tmp0 tmp tmp2;
+run;
+
+%end;
+%else %do;
+%put Algún dato no fue proporcionado. No se hizo la codificación.;
+%end;
+%mend codificacion;
+
+	*Ejemplo;
+	%codificacion(base_entrada=no_encontrados, base_salida=no_encontrados_cod, variable_a_codificar=diagnostico);
+	DATA cie10BIS; SET cie10;RENAME DIAGNOSTICO=DIAGNOSTICO_CIE COD3=COD3_CIE;RUN;
+	%codificacion(base_entrada=cie10BIS, base_salida=cie10_cod, variable_a_codificar=DIAGNOSTICO_CIE);
+	%codificacion(base_entrada=tempv2, base_salida=catbase_cod, variable_a_codificar=diagnostico);
+
+*******************************************************************************************
+*******************************************************************************************
+*******Macro para encontrar las coincidencias por clave de dos bases ya codificadas********
+***************Estas bases deben tener sólo la cve_metaphone en común**********************
+*******************************************************************************************
+*****Base 1 debe ser la base maestra*******************************************************
+*****Base 2 debe ser el catálogo***********************************************************
+*******************************************************************************************;
+/*  En particular, hacemos dos pasos para poder hacer el merge. Primero, se hace un merge 
+	mediante las palabras sin acrónimos y, después, se hace mediante la clave originada 
+	de la variante del Metaphone. En caso de que haya más de dos casos, nos quedamos con 
+	la que tenga una menor distancia (combinación lineal de distancia generalizada y 
+	levenshtein).		
+	var_sinacron_base1 y var_sinacron_base2 son las variables SIN_ACRONIMOS que aparecen 
+	en la base_salida de la codificacion;
+*/
+%macro matches(nombre_base1=,nombre_base2=,base_salida=, var_sinacron_base1=, var_sinacron_base2=, distancia_ged=,distancia_lev=);
+%if "&nombre_base1" NE "" or "&nombre_base2" NE "" or "&base_salida" NE "" or "&var_sinacron_base1" NE "" or "&var_sinacron_base2" NE ""%then 
+%do;
+*Se ordena la nombre_base1 que se obtuvo de la codificación;
+proc sort data=&nombre_base1;
+by &var_sinacron_base1;
+run;
+*Se ordena la nombre_base2 que se obtuvo de la codificación;
+proc sort data=&nombre_base2;
+by &var_sinacron_base2;
+run;
+
+*Primero se hace el metch mediante la variable sin acrónimos. Se generan tres bases de datos,
+el primer merche, observaciones de primera base y observaciones de segunda base.;
+
+data  base1 base2 primermerge;
+MERGE &nombre_base1 (IN=A rename=(&var_sinacron_base1=sinacron)) &nombre_base2 (IN=B rename=(&var_sinacron_base2=sinacron));
+by sinacron;
+if A and not B then output base1;
+if A and B then base="match_acroni";
+if A and B then output primermerge;
+run;
+*Eliminamos columnas vacías de las bases;
+%DROPMISS( BASE1, BASE1_1 );
+
+*Se ordena la base1 que se obtuvo;
+proc sort data=BASE1_1;
+by cve_metaphone;
+run;
+*Se ordena la base2 que se obtuvo;
+proc sort data=&nombre_base2;
+by cve_metaphone;
+run;
+
+* El segundo merge se hace sobre la clave metaphone a las bases intermedias recién creadas;
+data segundomerge;
+MERGE BASE1_1(IN=A rename=(sinacron=&var_sinacron_base1)) &nombre_base2(IN=B);
+by cve_metaphone;
+if A and not B then base="&nombre_base1"; 
+if A and B then base="match_cve";
+dist_ged=compged(&var_sinacron_base1,&var_sinacron_base2);
+dist_lev=complev(&var_sinacron_base1,&var_sinacron_base2);
+if A;
+run;
+
+*Se hace una lista con los diagnósticos y sus distancias generalizadas y levenshtein; 
+data &base_salida /*(drop= &var_sinacron_base1 &var_sinacron_base2 clavebase)*/;
+set primermerge segundomerge;
+*if (dist_ged<=&distancia_ged and dist_lev<=&distancia_lev /*and base="match"*/);
+run;
+
+%end;
+%else %do;
+%put Algún dato no fue proporcionado. No se construyó la tabla final.;
+%end;
+%mend matches;
+
+
+	*Ejemplo;
+	%matches(nombre_base1=no_encontrados_cod,nombre_base2=CIE10_cod,base_salida=MATCHED, var_sinacron_base1=SIN_ACRONIMOS_DIAGNOSTICO, var_sinacron_base2=SIN_ACRONIMOS_DIAGNOSTICO_CIE, distancia_ged=400,distancia_lev=5);
+	*%XPORT();
+
+proc means data=matched (where=(base='no_encontrad')) noprint;
+var freq;
+class SIN_ACRONIMOS_DIAGNOSTICO;
+types SIN_ACRONIMOS_DIAGNOSTICO;
+output out=colapsado (drop=_freq_ _type_) sum=;
+run;
+%xport();
+/**********************************************************************************************
+REFERENCIAS
+http://132.247.8.18:8080/intranet/downloads/uploads/2014/02/GLOSARIOINCMNSZ.pdf
