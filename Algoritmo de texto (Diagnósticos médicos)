@@ -302,7 +302,7 @@ nume=TRANSLATE(resto, "0112_3!4444-56$77889","PBVFHTDSZCXYLNMQKGJR");
 cve_metaphone=CATS(primera,nume);
 run;
 
-proc delete data=tmp0 tmp tmp2;
+proc delete data=tmp0 tmp tmp2 &base_entrada;
 run;
 
 %end;
@@ -390,15 +390,20 @@ if A;
 run;
 
 *Se hace una lista con los diagnósticos y sus distancias generalizadas y levenshtein; 
-data &base_salida /*(drop= &var_sinacron_base1 &var_sinacron_base2 origen_cve)*/;
+data &base_salida (drop= &var_sinacron_base1 &var_sinacron_base2 /*origen_cve*/);
 set primermerge segundomerge;
-*if (dist_ged<=&distancia_ged and dist_lev<=&distancia_lev );
+if (dist_ged>&distancia_ged and dist_lev>&distancia_lev and origen_cve ne "no_match") then origen_cve="match_dudoso";
 run;
 
 %end;
 %else %do;
 %put Algún dato no fue proporcionado. No se construyó la tabla final.;
 %end;
+
+*Borras las versiones que ya no se usaran;
+	proc datasets library=WORK noprint;
+		delete primermerge segundomerge nomatch: cataux: &nombre_base1 &nombre_base2;
+
 %mend matches;
 
 
@@ -407,7 +412,7 @@ run;
 	*%matches(nombre_base1=no_encontrados_cod,nombre_base2=catbase_cod,base_salida=MATCHED, var_sinacron_base1=SIN_ACRONIMOS_DIAGNOSTICO, var_sinacron_base2=SIN_ACRONIMOS_DIAGNOSTICO_CIE, distancia_ged=400,distancia_lev=5);
 
 	*%XPORT();
-
+/*
 /**********************************************************************************************
 REFERENCIAS
 http://132.247.8.18:8080/intranet/downloads/uploads/2014/02/GLOSARIOINCMNSZ.pdf
