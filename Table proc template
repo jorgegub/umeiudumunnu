@@ -1,0 +1,61 @@
+/* This table contains two layouts with the same yaxis category (on the first, we present a scatter. On the second layout
+we present a set of boxplots. 
+Reference: http://www.pharmasug.org/proceedings/2014/DG/PharmaSUG-2014-DG14-SAS.pdf
+*/
+%let ejey=agrupado;
+%let meanmen=mean1;
+%let meanfem=mean2;
+%let brazol=p103;
+%let brazoh=p903; 
+%let cajal=p253;
+%let cajah=p753;
+%let marcador=p503;
+%let title=Duración de Incapacidades;
+%let subtitle=Días;
+%let varsort=mean3;
+%put &ejey &meanmen &meanfem &title &subtitle;
+proc sort data=mergeado; by &varsort ;run;
+ods graphics on/ reset=all border=off WIDTH=24cm height=15.6cm;
+ods listing image_dpi=1200;
+proc template;
+ define statgraph Tablaxdiagnostico;
+ dynamic titulo subtitulo;
+ begingraph;
+ layout lattice / columns=2 rowdatarange=union;
+ rowaxes;
+rowaxis / display=(ticks tickvalues)
+ discreteopts=(colorbands=even COLORBANDSATTRS=(transparency=0.5));
+ endrowaxes;
+ layout overlay / cycleattrs=true xaxisopts=( offsetmin=0.05 offsetmax=0.05 display=standard displaysecondary=none tickstyle=across label = "Promedio" labelattrs=(family='Arial' size=8pt ) tickvalueattrs=(family='Arial' size=9pt  ));
+ scatterplot y=&ejey x=&meanmen / markerattrs=(symbol=circlefilled size=10)
+ name='a' legendlabel='Hombres';
+scatterplot y=&ejey x=&meanfem / markerattrs=(symbol=circlefilled size=10)
+ name='b' legendlabel='Mujeres';
+ endlayout;
+ layout overlay / xaxisopts=(type=log logopts=(base=2) offsetmin=0.05 offsetmax=0.05 tickstyle=across label = "Marcador: P50. Caja: P25-P75. Brazos: P90-P10" labelattrs=(family='Arial' size=8pt ) tickvalueattrs=(family='Arial' size=9pt  ) );
+ *Caja y brazo;
+highlowplot y=&ejey low=&cajal high=&cajah / type=bar fillattrs=(transparency=.8 color=gray) ;
+scatterplot y=&ejey x=&marcador / xerrorlower=&brazol xerrorupper=&brazoh
+ /*errorbarcapshape=none*/
+markerattrs=(symbol=squarefilled size=10 color=black)
+ERRORBARATTRS=(color=black);
+ endlayout;
+ sidebar / align=top spacefill=false;
+layout gridded;
+ entry  titulo /
+ textattrs=graphtitletext(family='Arial' size=15 );
+ entry subtitulo / textattrs=(family='Arial' size=12 style=italic);
+endlayout;
+ endsidebar;
+ sidebar / align=bottom spacefill=false;
+ discretelegend 'a' 'b'/ border=false VALUEATTRS=(family='Arial' size=9pt );
+ endsidebar;
+ endlayout;
+endgraph;
+ end;
+run;
+
+proc sgrender data=mergeado template=Tablaxdiagnostico;
+dynamic titulo="&title"
+		subtitulo="&subtitle";
+run;
