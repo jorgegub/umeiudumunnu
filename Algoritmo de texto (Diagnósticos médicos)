@@ -167,20 +167,16 @@ palabra_mod=TRANWRD(palabra_mod," MANOS "," MANO ");
 palabra_mod=TRANWRD(palabra_mod," OJOS "," OJO ");	
 palabra_mod=TRANWRD(palabra_mod," DEDOS "," DEDO ");	
 
-
-palabra_mod=TRANWRD(palabra_mod,"   "," ");*quita triples espacios;
-palabra_mod=TRANWRD(palabra_mod,"  "," ");*quita dobles espacios;
+*quita dobles y triples y así de espacios;
+palabra_mod=COMPBL(palabra_mod);
 
 *Encuentra coincidencias;
 Palabra_mod=TRANWRD(palabra_mod," NO ESPECIFICADA "," ");
 Palabra_mod=TRANWRD(palabra_mod," NO ESPECIFICADO "," ");
 Palabra_mod=TRANWRD(palabra_mod," A NIVEL "," ");
 Palabra_mod=TRANWRD(palabra_mod," OPERADO "," ");
-Palabra_mod=TRANWRD(palabra_mod," AA SEM "," AMENAZA ABORTO ");
 
-*palabra_mod=TRANWRD(palabra_mod," EMB SEM "," AMENAZA ABORTO ");
-*palabra_mod=TRANWRD(palabra_mod," EMB SEM "," ");		
-*palabra_mod=TRANWRD(palabra_mod," AMENAZA PARTO "," AMENAZA ABORTO ");
+palabra_mod=TRANWRD(palabra_mod," AMENAZA PARTO "," AMENAZA ABORTO ");
 
 *Los siguientes comandos sólo los realiza cuando no se trata del catálogo, i.e. no encuentra la palabra "CIE";
 %if %index(%UPCASE(&base_entrada),CIE) > 0 %then %goto Continua;
