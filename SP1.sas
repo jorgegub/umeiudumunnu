@@ -2,7 +2,7 @@
 	filename SP1 temp;
 
 	proc http
-		url= "https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?sector=8&accion=consultarCuadro&idCuadro=CP154&locale=es&formatoXLS.x=1&fechaInicio=1231394400000&fechaFin=1831077200000"
+		url= "%NRSTR(https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?sector=8&accion=consultarCuadro&idCuadro=CP154&locale=es&formatoXLS.x=1&fechaInicio=1231394400000&fechaFin=1831077200000)"
 
 		method="GET"
 		out=SP1;
