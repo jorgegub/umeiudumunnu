@@ -1,7 +1,7 @@
 /*****************************************************************
-This macro program retrieves the inflation serie (INPC) of the 
-Bank of Mexico's Information System, using a HTTP Procedure
-							8/10/21
+This SAS macro program retrieves the inflation serie (INPC) of the 
+Bank of Mexico's Information System, using a HTTP Procedure.
+							8/oct/21
 ******************************************************************/
 
 %macro sp1();
